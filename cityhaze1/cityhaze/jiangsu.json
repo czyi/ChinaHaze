@@ -1,0 +1,25 @@
+{
+"jiangsu":[
+{"primary_pollutant":"","city_name":"丽水市","PM10":"43","AQI":"44","O3/h":"72","SO2":"6","rank":"118","PM25":"29","O3_8h":"79","CO":"0.4","Air Quality Level":"优","NO2":"14"},
+{"primary_pollutant":"颗粒物(PM2.5)","city_name":"杭州市","PM10":"62","AQI":"60","O3/h":"43","SO2":"13","rank":"209","PM25":"42","O3_8h":"48","CO":"0.818","Air Quality Level":"良","NO2":"38"},
+{"primary_pollutant":"颗粒物(PM10)","city_name":"温州市","PM10":"50","AQI":"51","O3/h":"61","SO2":"3","rank":"159","PM25":"13","O3_8h":"71","CO":"0.475","Air Quality Level":"良","NO2":"25"},
+{"primary_pollutant":"颗粒物(PM2.5)","city_name":"宁波市","PM10":"62","AQI":"64","O3/h":"67","SO2":"10","rank":"234","PM25":"45","O3_8h":"76","CO":"0.838","Air Quality Level":"良","NO2":"37"},
+{"primary_pollutant":"臭氧8小时","city_name":"舟山市","PM10":"37","AQI":"52","O3/h":"89","SO2":"8","rank":"163","PM25":"15","O3_8h":"101","CO":"0.633","Air Quality Level":"良","NO2":"10"},
+{"primary_pollutant":"","city_name":"台州市","PM10":"40","AQI":"49","O3/h":"65","SO2":"4","rank":"147","PM25":"34","O3_8h":"73","CO":"0.533","Air Quality Level":"优","NO2":"16"},
+{"primary_pollutant":"颗粒物(PM2.5)","city_name":"金华市","PM10":"_","AQI":"53","O3/h":"40","SO2":"12","rank":"169","PM25":"36","O3_8h":"51","CO":"0.7","Air Quality Level":"良","NO2":"28"},
+{"primary_pollutant":"","city_name":"衢州市","PM10":"24","AQI":"31","O3/h":"50","SO2":"19","rank":"40","PM25":"21","O3_8h":"61","CO":"0.6","Air Quality Level":"优","NO2":"26"},
+{"primary_pollutant":"颗粒物(PM10)","city_name":"绍兴市","PM10":"105","AQI":"79","O3/h":"51","SO2":"15","rank":"274","PM25":"47","O3_8h":"52","CO":"0.717","Air Quality Level":"良","NO2":"42"},
+{"primary_pollutant":"颗粒物(PM10)","city_name":"嘉兴市","PM10":"54","AQI":"53","O3/h":"64","SO2":"17","rank":"171","PM25":"33","O3_8h":"69","CO":"0.867","Air Quality Level":"良","NO2":"41"},
+{"primary_pollutant":"颗粒物(PM2.5)","city_name":"湖州市","PM10":"73","AQI":"76","O3/h":"52","SO2":"21","rank":"269","PM25":"55","O3_8h":"48","CO":"0.992","Air Quality Level":"良","NO2":"53"}
+
+
+{"primary pollutant":"颗粒物(PM10)","city name":"盐城","PM10":"60","AQI":"56","O3/h":"64","SO2":"23","rank":"184","PM2.5":"30","O3/8h":"61","CO":"0.66","Air Quality Level":"良","NO2":"31"}
+{"primary pollutant":"颗粒物(PM2.5)","city name":"徐州","PM10":"159","AQI":"130","O3/h":"11","SO2":"42","rank":"348","PM2.5":"98","O3/8h":"8","CO":"1.586","Air Quality Level":"轻度污染","NO2":"73"}
+{"primary pollutant":"颗粒物(PM2.5)","city name":"南通","PM10":"60","AQI":"58","O3/h":"59","SO2":"18","rank":"194","PM2.5":"40","O3/8h":"81","CO":"0.98","Air Quality Level":"良","NO2":"30"}
+{"primary pollutant":"颗粒物(PM10)","city name":"淮安","PM10":"83","AQI":"68","O3/h":"38","SO2":"31","rank":"244","PM2.5":"33","O3/8h":"38","CO":"0.82","Air Quality Level":"良","NO2":"46"},
+{"primary pollutant":"颗粒物(PM2.5)颗粒物(PM10)","city name":"苏州","PM10":"78","AQI":"65","O3/h":"47","SO2":"23","rank":"238","PM2.5":"46","O3/8h":"74","CO":"1.05","Air Quality Level":"良","NO2":"51"},
+{"primary pollutant":"颗粒物(PM2.5)颗粒物(PM10)","city name":"宿迁","PM10":"85","AQI":"69","O3/h":"31","SO2":"103","rank":"247","PM2.5":"49","O3/8h":"53","CO":"2.075","Air Quality Level":"良","NO2":"68"},
+
+
+]
+}

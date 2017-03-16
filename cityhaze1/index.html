@@ -1,0 +1,634 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Should I go out today?</title>
+</head>
+<link rel="stylesheet" href="css/tether.min.css">
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<style>
+body
+{
+    background-color:#d0e4fe;
+}
+svg
+{
+    position: absolute;
+    top:160px;
+    background-color:rgb(250, 245, 240);
+    width: 50%;
+    border-radius: 20px;
+}
+.container {
+    position: relative;
+    top: 25%;
+    left: 0%;
+}
+
+a {
+    font-family: Helvetica, sans-serif;
+    font-size: 16px;
+    color: #000;
+}
+
+text {
+    font-family: Helvetica, sans-serif;
+    font-size: 8px;
+    color: #000;
+}
+
+h1 {
+    font-family: Helvetica, sans-serif;
+    font-size: 28px;
+    /*color: #fff;*/
+    color: rgb(100, 100, 100);
+}
+
+h2 {
+    font-family: Helvetica, sans-serif;
+    font-size: 18px;
+    /*color: #fff;*/
+    color: rgb(100, 100, 100);
+}
+
+div.title {
+    bottom:20%;
+    padding: 4px;
+    background-color: #ddd;
+    /*border-bottom: 2px solid #ccc;*/
+    padding: 4px;
+}
+
+div.reference {
+    position: absolute;
+    top: 660px;
+    height: 200px;
+    width: 100%;
+    padding: 4px;
+    background-color: #ddd;
+    border-bottom: 2px solid #ccc;
+    padding: 4px;
+}
+
+#selection{
+    position: absolute;
+    left:50%;
+    padding: 1em;
+}
+#information{
+    position: absolute;;
+    left:51%;
+    padding: 1em;
+    background-color:rgb(250, 245, 240);
+    top: 280px;
+    width: 47%;
+    height: 375px;
+    border-radius: 10px;
+}
+u{
+    color: rgb(222, 140, 104);
+}
+.btn-unselected
+{
+    /*222, 140, 104 || 242, 117, 63*/
+    background-color: rgb(222, 140, 104);
+    border-color: rgb(222, 140, 104);
+}
+.btn-unselected:hover
+{
+    background-color: rgb(232, 126, 81);
+    /*border-color: rgb(242, 117, 63);*/
+    border-color: rgb(219, 0, 0);
+}
+.tooltip {
+    position: absolute;
+    font-size: 16px;
+    text-align: center;
+    padding: 1em;
+    background: rgb(222, 140, 104);
+    border: 1px solid rgb(232, 126, 81);
+    color: #fff;
+    border-radius: 10px;
+}
+#back{
+    position: absolute;
+    left:20px;
+    top:600px;
+}
+</style>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/tether.min.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+<script type="text/javascript" src="js/d3.v3.min.js"></script>
+<script type="text/javascript" src="js/chroma.min.js"></script>
+
+<body>
+<div class="title">
+    <div class="container">
+        <br>
+        <h1 style="text-align:center">Should I go out today?</h1>
+        <h2 style="text-align:center">AQI(0-50) : No air pollution; AQI(50-100) : Acceptable air pollution; AQI(100-150) :Slight pollution</h2>
+        <h2 style="text-align:center">AQI(150-200) : Mild pollution; AQI(200-250) : Medium-heavy pollution; AQI(250-300) : Heavy pollution</h2>
+        <br>
+    </div>
+</div>
+<div id="selection">
+    <div class="btn-group">
+        <button type="button" class="btn-unselected btn btn-primary" id="age0" onclick="changeAge(0)">baby(0-2)</button>
+        <button type="button" class="btn-unselected btn btn-primary" id="age1" onclick="changeAge(1)">children(3-12)</button>
+        <button type="button" class="btn-unselected btn btn-primary" id="age2" onclick="changeAge(2)">teenager(13-19)</button>
+        <button type="button" class="btn-unselected btn btn-primary" id="age3" onclick="changeAge(3)">adult(20-60)</button>
+        <button type="button" class="btn-unselected btn btn-primary" id="age4" onclick="changeAge(4)">senium(>60)</button>
+    </div>
+    <br>
+    <br>
+    <div class="btn-group">
+        <button type="button" class="btn-unselected btn btn-primary" id="illness0" onclick="selectIllness(0)">allergic physique</button>
+        <button type="button" class="btn-unselected btn btn-primary" id="illness1" onclick="selectIllness(1)">respiratory system</button>
+        <button type="button" class="btn-unselected btn btn-primary" id="illness2" onclick="selectIllness(2)">cardiac</button>
+        <button type="button" class="btn-unselected btn btn-primary" id="illness3" onclick="selectIllness(3)">lung</button>
+        <button type="button" class="btn-unselected btn btn-primary" id="illness4" onclick="selectIllness(4)">pregnant</button>
+        <button type="button" class="btn-unselected btn btn-primary" id="illness5" onclick="selectIllness(5)">other</button>
+    </div>
+</div>
+
+<div id="information">
+    <p id="prov">provice:</p>
+    <p id="info">AQI：</p>
+    <p id="advice">Advice：</p>    
+</div>
+
+<div class="reference">
+    <table border="0">
+        <tr>
+            <td>Author：</td>
+            <td>Chujiao Hou</td>
+        </tr>
+        <tr>
+            <td></td>
+            <td>Ziyi Chen</td>
+        </tr>
+    </table>
+    <a style="left: 500px; font-family: Helvetica, sans-serif;font-size: 16px;color: #000;"> All Data is Captured from
+        following source, Please do not use this page for commercial purposes.</a>
+    <table>
+        <tr>
+            <td>Data source:</td>
+            <td>Realtime haze polution data<a href="http://www.pm25.in/">http://www.pm25.in/</a></td>
+        </tr>
+    </table>
+     <table>
+        <tr>
+            <td>GitHub:</td>
+            <td>Source Code: <a href="https://github.com/czyi/ChinaHaze">https://github.com/czyi/ChinaHaze</a></td>
+        </tr>
+    </table>   
+</div>
+
+<div class="map" id="map">
+</div>
+
+<div id="back">
+    <button type="button" class="btn-unselected btn btn-primary" onclick="backtochina()">back</button>    
+</div>
+
+<script type="text/javascript">
+    var width  = 600;
+    var height = 495;
+    
+    var svg = d3.select("#map").append("svg")
+        .attr("width", width)
+        .attr("height", height)
+        .append("g")
+        .attr("transform", "translate(0,0)")
+    
+    var projection = d3.geo.mercator()
+                        .center([120.2, 29.3])
+                        .scale(4000)
+                        .translate([width/2, height/2]);
+    
+    var path = d3.geo.path()
+                    .projection(projection);
+
+    var dic=new Array();
+    d3.json("haze2016.json", function(error, root) {
+        if (error) 
+            return console.error(error);
+        //console.log(root);
+
+        for(var i=0; i<root.haze16.length;i++)
+        {
+            //dic[root.haze16[i].province]=root.haze16[i].pm25;
+            //dic[i]=root.haze16[i].pm25;
+            dic[i] = new Array(root.haze16[i].province, root.haze16[i].pm25);
+        }
+
+    });
+    
+    //"甘肃""青海""广西""贵州""重庆""北京""福建""安徽""广东""西藏""新疆""海南""宁夏""陕西""山西""湖北""湖南"
+    //"四川""云南""河北""河南""辽宁""山东""天津""江西""江苏""上海""浙江""吉林""内蒙古""黑龙江"
+    var prov2py=c=new Array();
+    prov2py["甘肃"]="Gansu"; prov2py["青海"]="Qinghai"; prov2py["广西"]="Guangxi"; prov2py["贵州"]="Guizhou"; prov2py["重庆"]="Chongqing"; prov2py["北京"]="Beijing";
+    prov2py["福建"]="Fujian"; prov2py["安徽"]="Anhui";  prov2py["广东"]="Guangdong"; prov2py["西藏"]="Xizang"; prov2py["新疆"]="Xinjiang"; prov2py["海南"]="Hainan";
+    prov2py["宁夏"]="Ningxia"; prov2py["陕西"]="Shan3xi"; prov2py["山西"]="Shan1xi"; prov2py["湖北"]="Hubei"; prov2py["湖南"]="Hunan"; prov2py["四川"]="Sichuan";
+    prov2py["云南"]="Yunnan"; prov2py["河北"]="Hebei"; prov2py["河南"]="Henan"; prov2py["辽宁"]="Liaoning"; prov2py["山东"]="Shandong"; prov2py["天津"]="Tianjing";
+    prov2py["江西"]="Jiangxi"; prov2py["江苏"]="Jiangsu"; prov2py["上海"]="Shanghai"; prov2py["浙江"]="zhejiang"; prov2py["吉林"]="Jilin"; 
+    prov2py["内蒙古"]="Neimenggu"; prov2py["黑龙江"]="Heilongjiang"; 
+
+    var citydic=new Array();
+    d3.json("cityhaze/allcity.json", function(error, root) {
+        if (error) 
+            return console.error(error);
+        console.log(root);
+
+        for(var i=0; i<root.china.length;i++)
+        {
+            //"PM10":"43","AQI":"44","O3/h":"72","SO2":"6","rank":"118","PM2.5":"29","O3/8h":"79","CO":"0.4","NO2":"14"
+            var zji=root.china[i];
+
+            // console.log(zji.city_name);
+            // console.log(zji.AQI);
+
+            citydic[zji.city_name]=new Array(zji.PM10, zji.AQI, zji.O3_h, zji.SO2, zji.rank, zji.PM25, zji.CO, zji.NO2);
+        }
+    });
+
+    var cl_gray = d3.rgb("rgb(200,200,200)");
+
+    var tooltip = d3.select("body")
+        .append("div")
+        .attr("class", "tooltip")
+        .style("opacity", 0.0);    
+
+    var age=-1;//not select age
+    var illness=new Array(6);
+    for(var i=0; i<6; i++) illness[i]=0;//no illness
+    
+    d3.json("map/zhejiang.json", function(error, root) {
+        if (error) 
+            return console.error(error);
+        // console.log(root.features);
+        // console.log(root.features[0].properties.name);
+     
+        svg.selectAll("path")
+            .data( root.features )
+            .enter()
+            .append("path")
+            .attr("stroke","#fff")
+            .attr("stroke-width",1)
+            .attr("fill", function(d,i){
+                var city_name=root.features[i].properties.name;
+                // console.log(city_name);
+                // console.log(citydic[city_name]);
+
+                return getcolor(citydic[city_name][1]);
+            })
+            .attr("d", path )
+            .on("mouseover",function(d,i){
+                d3.select(this)
+                    .attr("fill",cl_gray);
+
+                var city_name=root.features[i].properties.name;
+                d3.select("#prov")
+                    .text("city : "+city_name);
+
+                //zji.PM10, zji.AQI, zji.O3_h, zji.SO2, zji.rank, zji.PM25, zji.CO, zji.NO2
+                d3.select("#info")
+                    .html("AQI : "+citydic[city_name][1]+"<br>Rank : "+citydic[city_name][4]+"<br>PM2.5 : "+citydic[city_name][5]+"<br>PM10 : "+citydic[city_name][0]+"<br>SO2 : "+citydic[city_name][3]+"<br>NO2 : "+citydic[city_name][7]+"<br>CO : "+citydic[city_name][6]);
+
+                d3.select("#advice")
+                    .html("Travel Advice<br>" + getAdvice(citydic[city_name][1])+"<br>"+furtherAdvice(citydic[city_name][1]));
+
+                tooltip.html(city_name+"<br>AQI : "+citydic[city_name][1])
+                //.html(city_name+"<br>AQI : "+citydic[city_name][1]+"<br>Rank : "+citydic[city_name][4]+"<br>PM2.5 : "+citydic[city_name][5]+"<br>PM10 : "+citydic[city_name][0]+"<br>SO2 : "+citydic[city_name][3]+"<br>NO2 : "+citydic[city_name][7]+"<br>CO : "+citydic[city_name][6])
+                    .style("left", (d3.event.pageX) + "px")
+                    .style("top", (d3.event.pageY + 10) + "px")
+                    .style("opacity", 1.0);                    
+            })
+            .on("mouseout",function(d,i){
+                var city_name=root.features[i].properties.name;
+                d3.select(this)
+                    .attr("fill", getcolor(citydic[city_name][1]));
+
+                tooltip.html("").style("opacity", 0.0);    
+            });            
+    });   
+
+    var legend = svg.append("g")
+
+    legend.selectAll("text")
+        .data(["0", "50", "100", "150", "200", "250", "300"])
+        .enter()
+        .append("text")
+        .attr("x", function (d, i) {
+            return 10 + i * 79;
+        })
+        .attr("y", 20)
+        .text(function (d) {
+            return d;
+        });
+    svg.append("g")
+        .selectAll("rect")
+        .data([50, 100, 150, 200, 250, 300])
+        .enter()
+        .append("rect")
+        .attr("y", function (d, i) {
+            return 30;
+        })
+        .attr("x", function (d, i) {
+            return Math.floor(i) * 80 + 10;
+        })
+        .attr("width", 80)
+        .attr("height", 20)
+        .style("fill", function (d) {
+            return getcolor(d);
+        })
+        .style("stroke", "black")
+        .style("stroke-width", "0.2px");
+
+
+    //READ CHINA MAP
+    var root_china;
+    var prov_seq = new Array();
+    var prov_loc = new Array();
+    //d3.json("china.geojson", function(error, root) {
+    d3.json("map/china.json", function(error, root) {
+        if (error) 
+            return console.error(error);
+    
+        root_china=root;
+
+        for(var i=0; i<34; i++)
+        {
+            prov_seq[i]=root.features[i].properties.name;
+            console.log(i+" : " + prov_seq[i]);
+            prov_loc[i]=root.features[i].properties.cp;
+            console.log(i+" : " + prov_loc[i]);
+        }
+    });
+
+    function backtochina(){
+        console.log("backtochina");
+        //.style("opacity", 1.0);
+
+        d3.select("#back")
+            .style("opacity", 0.2);
+
+        var width  = 1000;
+        var height = 1000;
+
+        var projection = d3.geo.mercator()
+                            .center([125, 16])
+                            .scale(500)
+                            .translate([width/2, height/2]);
+        
+        var path = d3.geo.path()
+                        .projection(projection);        
+
+        svg.selectAll("path").remove();
+        
+        var root=root_china;
+        svg.selectAll("path")
+            .data( root.features )
+            .enter()
+            .append("path")
+            .attr("stroke","#fff")
+            .attr("stroke-width",1)
+            .attr("fill", function(d,i){
+                if(i<0 || i>30) return cl_gray;
+                else
+                {
+                    return getcolor(dic[i][1]);
+                }
+            })
+            .attr("d", path )
+            .on("mouseover",function(d,i){
+                d3.select(this)
+                    .attr("fill",cl_gray);
+
+                d3.select("#prov")
+                    .text(prov2py[dic[i][0]]+" Province ("+root.features[i].properties.name+")");
+
+                d3.select("#info")
+                    .text("pm2.5 : "+dic[i][1]);
+
+                d3.select("#advice")
+                    .text("");
+            })
+            .on("mouseout",function(d,i){
+                var cur_cl;
+                if(i<0 || i>30) cur_cl = cl_gray;
+                else
+                {
+                    cur_cl = getcolor(dic[i][1]);
+                }
+
+                d3.select(this)
+                    .attr("fill", cur_cl);
+            })  
+            .on("click", function (d, i) {
+                change2province(i);
+            })      
+
+        //console.log("backtochinaend");
+    }
+    //0新疆 1西藏 2内蒙古 3青海 4四川 5黑龙江 6甘肃 7云南 8广西 9湖南 10陕西 11广东 12吉林 13河北 14湖北 15贵州 16山东
+    //17江西 18河南 19辽宁 20山西 21安徽 22福建 23浙江 24江苏 25重庆 26宁夏 27海南 28台湾 29北京 30天津 31上海 32香港 33澳门
+    var prov_scale=new Array(2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000,2000);
+    prov_scale[23]=prov_scale[21]=prov_scale[22]=prov_scale[24]=prov_scale[19]=prov_scale[26]=4000;
+    prov_scale[18]=prov_scale[20]=prov_scale[8]=prov_scale[9]=prov_scale[11]=prov_scale[14]=prov_scale[15]=prov_scale[16]=prov_scale[17]=prov_scale[25]=3000;
+    prov_scale[0]=1000;
+    prov_scale[1]=prov_scale[5]=prov_scale[6]=1500;
+    prov_scale[2]=800;
+    prov_scale[27]=prov_scale[29]=prov_scale[30]=prov_scale[31]=prov_scale[32]=prov_scale[33]=6000;
+    function change2province(i)
+    {
+        console.log("change2province"+i);
+        var prov_name=prov_seq[i];
+        console.log(prov_name);
+
+        d3.select("#back")
+            .style("opacity", 1);
+
+        var width  = 600;
+        var height = 495;
+        
+        var projection = d3.geo.mercator()
+                            .center(prov_loc[i])
+                            .scale(prov_scale[i])
+                            //.scale(3000)
+                            .translate([width/2, height/2]);
+        
+        var path = d3.geo.path()
+                        .projection(projection);
+
+        svg.selectAll("path").remove();
+
+        var prov_file="map/"+prov2py[prov_name]+".json";
+        console.log(prov_file);
+
+        d3.json(prov_file, function(error, root) {
+            if (error) 
+                return console.error(error);
+
+            svg.selectAll("path")
+                .data( root.features )
+                .enter()
+                .append("path")
+                .attr("stroke","#fff")
+                .attr("stroke-width",1)
+                .attr("fill", function(d,i){
+                    var city_name=root.features[i].properties.name;
+                    // console.log(city_name);
+                    //console.log(citydic[city_name]);
+
+                    if(citydic[city_name])
+                    {
+                        console.log(citydic[city_name]);
+                        return getcolor(citydic[city_name][1]);
+                    }
+                    else
+                    {
+                        console.log("nodata");
+                        return cl_gray;                       
+                    }
+
+                })
+                .attr("d", path )
+                .on("mouseover",function(d,i){
+                    d3.select(this)
+                        .attr("fill",cl_gray);
+
+                    var city_name=root.features[i].properties.name;
+                    d3.select("#prov")
+                        .text("city : "+city_name);
+
+                    //zji.PM10, zji.AQI, zji.O3_h, zji.SO2, zji.rank, zji.PM25, zji.CO, zji.NO2
+                    if(citydic[city_name])
+                    {
+                        d3.select("#info")
+                            .html("AQI : "+citydic[city_name][1]+"<br>Rank : "+citydic[city_name][4]+"<br>PM2.5 : "+citydic[city_name][5]+"<br>PM10 : "+citydic[city_name][0]+"<br>SO2 : "+citydic[city_name][3]+"<br>NO2 : "+citydic[city_name][7]+"<br>CO : "+citydic[city_name][6]);
+
+                        d3.select("#advice")
+                            .html("Travel Advice<br>" + getAdvice(citydic[city_name][1])+"<br>"+furtherAdvice(citydic[city_name][1]));
+
+                        tooltip.html(city_name+"<br>AQI : "+citydic[city_name][1])
+                        //.html(city_name+"<br>AQI : "+citydic[city_name][1]+"<br>Rank : "+citydic[city_name][4]+"<br>PM2.5 : "+citydic[city_name][5]+"<br>PM10 : "+citydic[city_name][0]+"<br>SO2 : "+citydic[city_name][3]+"<br>NO2 : "+citydic[city_name][7]+"<br>CO : "+citydic[city_name][6])
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY + 10) + "px")
+                            .style("opacity", 1.0);  
+                    }
+                    else
+                    {
+                        d3.select("#info")
+                            .html("NO DATA");
+
+                        d3.select("#advice")
+                            .html("");
+
+                        tooltip.html(city_name+"<br>NO DATA")
+                            .style("left", (d3.event.pageX) + "px")
+                            .style("top", (d3.event.pageY + 10) + "px")
+                            .style("opacity", 1.0);                          
+                    }
+                  
+                })
+                .on("mouseout",function(d,i){
+                    var city_name=root.features[i].properties.name;
+                    d3.select(this)
+                        .attr("fill", getcolor(citydic[city_name][1]));
+
+                    tooltip.html("").style("opacity", 0.0);    
+                });            
+        });           
+    }
+
+    function getcolor(aqi) {       
+        if(aqi<=50) return d3.rgb(254, 204, 92);
+        else if (aqi<=100) return d3.rgb(253, 141, 60);
+        else if (aqi<=150) return d3.rgb(227, 26, 28);
+        else if (aqi<=200) return d3.rgb(170, 16, 18);
+        else if (aqi<=250) return d3.rgb(130, 6, 8);
+        else if (aqi<=300) return d3.rgb(80, 1, 1);            
+    }
+
+    function getAdvice(aqi)
+    {
+        var ret="";
+        if(aqi<=50) ret += "AQI(0-50) : No air pollution. No harm to the public health.";
+        else if (aqi<=100) ret += "AQI(50-100) : Acceptable air pollution. Only harmful to extremely sensitive people of certain contaminant.";
+        else if (aqi<=150) ret += "AQI(100-150) :Slight pollution. Affect people who are sensitive to contaminants, such as children and the elderly, who have respiratory disease or heart disease, and those who love outdoor activities. But have little impact on healthy people.";
+        else if (aqi<=200) ret += "AQI(150-200) : Mild contamination. Almost everyone's health will be affected, the negative impact on sensitive people is particularly evident.";
+        else if (aqi<=250) ret += "AQI(200-250) : Medium-heavy pollution. Everyone's health will be relatively serious impacted.";
+        else if (aqi<=300) ret += "AQI(250-300) : Serious contamination. Everyone's health will be seriously affected.";
+        return ret;
+    }
+    function furtherAdvice(aqi)
+    {
+        var ret="<u>";
+
+        var illnum=0;
+        for(var i=0; i<6; i++)
+        {
+            if(illness[i]>0) illnum++;
+        }
+
+        if(age==-1) ret+="Select age and disease to get further information.";
+        else if(aqi<=50) ret+="You can go out today.";
+        else if (aqi<=100){
+            if(illnum<3) ret+="You can go out today.";
+            else ret+="You should not go out today."
+        }
+        else if (aqi<=150){
+            if(illnum<3 && age!=0 && age!=4) ret+="You can go out today.";
+            else ret+="You should not go out today."
+        }
+        else if (aqi<=200){
+            if(illness==0 && age==3) ret+="You can go out today.";
+            else ret+="You should not go out today."
+        }
+        else
+        {
+            ret+="You should not go out today."
+        }
+
+        // if(age==-1) return "Select age and disease to get further information.";
+        // if(aqi<=50) return aqi+"You can go out today.";
+
+        // return "You should not go out today.";
+        return ret+"</u>";
+    }
+    function changeAge(i) {  
+        /*222, 140, 104 || 242, 117, 63*/
+        $("#age0").css("background-color", "rgb(222, 140, 104)");
+        $("#age1").css("background-color", "rgb(222, 140, 104)");
+        $("#age2").css("background-color", "rgb(222, 140, 104)");
+        $("#age3").css("background-color", "rgb(222, 140, 104)");
+        $("#age4").css("background-color", "rgb(222, 140, 104)");
+        $("#age" + i.toString()).css("background-color", "rgb(242, 117, 63)");
+        age=i;
+    }
+
+    $("#illness0").css("background-color", "rgb(222, 140, 104)");
+    $("#illness1").css("background-color", "rgb(222, 140, 104)");
+    $("#illness2").css("background-color", "rgb(222, 140, 104)");
+    $("#illness3").css("background-color", "rgb(222, 140, 104)");
+    $("#illness4").css("background-color", "rgb(222, 140, 104)");
+    $("#illness5").css("background-color", "rgb(222, 140, 104)");
+    function selectIllness(i)
+    {
+        //rgb(11, 183, 186)   
+        if($("#illness"+i).css('background-color') == "rgb(222, 140, 104)")
+        {
+            $("#illness"+i).css("background-color", "rgb(242, 117, 63)");
+            illness[i]=1;
+        } 
+        else
+        {
+            $("#illness"+i).css("background-color", "rgb(222, 140, 104)");
+            illness[i]=0;
+        } 
+    }
+</script>
+
+</body>
